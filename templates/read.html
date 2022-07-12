@@ -101,13 +101,34 @@ font-weight: bold;
 }
 
 .contents {
-    background-color: rgba( 0, 0, 0, 0.5 );
+    background-color: rgba( 255,255,255, 0.5 );
 	width:1400px;
 	margin: 10px auto;
 	color:white;
 	padding: 20px;
 	display: flex-direction;
 	align-items: center;
+}
+
+.Title {
+ width: 1000px;
+ height: 100px;
+ color: black;
+<!-- background-color: rgba( 255,255,255, 0.5 );-->
+}
+
+.Info {
+ width: 1000px;
+ height: 100px;
+ color: black;
+<!-- background-color: rgba(  255,255,255, 0.5 );-->
+}
+
+.words {
+ width: 1000px;
+ height: 1000px;
+ color: black;
+<!-- background-color: rgba(  255,255,255, 0.5 );-->
 }
 
 .contents > col {
@@ -210,15 +231,15 @@ success: function (response) {
                 <li class="active"><a href="/"><img
                         src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
                         width=70px, height=70px title="캠퍼스팟"></a></li>
-                <li><a href="/campus_01">중앙대학교</a></li>
-                <li><a href="/campus_02">숭실대학교</a></li>
-                <li><a href="/campus_03">총신대학교</a></li>
+                <li><a href="/campus_01">고려대학교</a></li>
+                <li><a href="/campus_02">건국대학교</a></li>
+                <li><a href="/campus_03">동국대학교</a></li>
                 <li><a href="/campus_04">서강대학교</a></li>
                 <li><a href="/campus_05">연세대학교</a></li>
                 <li><a href="/campus_06">한양대학교</a></li>
-                <li><a href="/campus_07">건국대학교</a></li>
-                <li><a href="/campus_08">고려대학교</a></li>
-                <li><a href="/campus_09">동국대학교</a></li>
+                <li><a href="/campus_07">숭실대학교</a></li>
+                <li><a href="/campus_08">중앙대학교</a></li>
+                <li><a href="/campus_09">총신대학교</a></li>
                 <li><a href="/campus_10">서울대학교</a></li>
                 <div class="logoutButton">
                     <button onclick="logout()" type="button" class="btn btn-secondary mybtn">로그아웃</button>
@@ -232,74 +253,17 @@ success: function (response) {
 
 <div class="mask"></div>
 <div class="contents">
-    <div class="row">
-        <div class="col">
-            뭔가 메뉴
-        </div>
-        <div class="col-6">
-            뭔가 메뉴 넓은거
-        </div>
-        <div class="col">
-            <div class="logoutButton">
-                    <button onclick="logout()" type="button" class="btn btn-primary mybtn">글쓰기</button>
-                </div>
-        </div>
+    <div class="Title">
+        <p>글 제목입니다.</p>
     </div>
-        <div class="row">
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0">
-                <p>카레맛집</p>
-                </a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
+    <div class="Info">
+        <p>작성자/나이</p>
+    </div>
+    <div class="words">
+        <p>글 내용입니다.</p>
+    </div>
+
+
 </div>
 
 </body>
