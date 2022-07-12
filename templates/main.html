@@ -1,327 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>CampuSpot 캠퍼스팟</title>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Webpage Title -->
+    <title>Main | CampuSpot</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Hahmlet:wght@100;200&display=swap"
-        rel="stylesheet">
-  <style type="text/css"></style>
+    <!-- Bulma CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CSS -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Nanum+Pen+Script&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      color: white;
-      font-family: 'Hahmlet', serif;
-      box-sizing: border-box;
-    }
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    ul {
-      list-style: none;
-    }
+    <!-- CSS File -->
+    <link
+      href="{{ url_for('static', filename='main.css') }}"
+      rel="stylesheet"
+    />
 
-    a {
-      text-decoration: none;
-      color: white;
-      outline: none;
-    }
+    <!-- JS File -->
+    <script defer src="{{ url_for('static', filename='main.js') }}"></script>
+  </head>
 
-
-    header {
-      width: 100%;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin: 10px 10px 10px 10px
-    }
-
-    header > nav {
-      width: 100%;
-      height: 10%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: black;
-    }
-
-    header ul {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    header ul > li {
-      font-size: 15px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      margin: 0px 2px 0px 2px;
-    }
-
-    .header.drop {
-      position: fixed;
-      animation: dropHeader 0.3s;
-    }
-
-    @keyframes dropHeader {
-      0% {
-        top: -5rem;
-      }
-      100% {
-        top: 0;
-      }
-    }
-
-    body {
-      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      url('https://watermark.lovepik.com/photo/20211209/large/lovepik-young-college-student-sitting-on-the-lawn-image-picture_501758286.jpg');
-      background-position: center;
-      background-size: cover;
-    }
-
-    h1 {
-      font-weight: bold;
-    }
-
-    .container {
-      width: 1400px;
-      margin: 10px 10px 10px 10px;
-    }
-
-    .contents {
-      width: 1400px;
-      margin: 10px auto;
-      color: white;
-    }
-
-    .contents > First {
-      margin: 10px 10px 10px 10px;
-      padding: 5px;
-    }
-
-    .contents > Second {
-      margin: 10px 10px 10px 10px;
-    }
-
-    .mybtn {
-      width: 100%;
-      margin: 10px auto 20px auto;
-    }
-
-
-    .logoutButton {
-      width: 100px;
-      margin: 20px 10px 20px 10px;
-    }
-
-    option {
-      color: black;
-    }
-
-
-  </style>
-  <script>
-
-    let header = document.querySelector('.header');
-    let headerHeight = header.offsetHeight;
-
-    window.onscroll = function () {
-      let windowTop = window.scrollY;
-      // 스크롤 세로값이 헤더높이보다 크거나 같으면
-      // 헤더에 클래스 'drop'을 추가한다
-      if (windowTop >= headerHeight) {
-        header.classList.add('drop');
-      }
-      // 아니면 클래스 'drop'을 제거
-      else {
-        header.classList.remove('drop');
-      }
-    };
-
-    $(document).ready(function () {
-      show_order();
-    });
-
-    function show_order() {
-      $.ajax({
-        type: 'GET',
-        url: '/mars',
-        data: {},
-        success: function (response) {
-          let rows = response['orders'];
-          for (let i = 0; i < rows.length; i++) {
-            let name = rows[i]['name'];
-            let address = rows[i]['address'];
-            let size = rows[i]['size'];
-            let regex = /[^0-9]/g;
-            let price = size.replace(regex, '');
-
-            let temp_html = `<tr>
-                            <td>${name}</td>
-                            <td>${address}</td>
-                            <td>${size}</td>
-                            <td>${price*500}</td>
-                         </tr>`;
-            $('#order-box').append(temp_html);
-          }
-        },
-      });
-    }
-
-    function save_order() {
-      let name = $('#name').val();
-      let address = $('#address').val();
-      let size = $('#size').val();
-
-      $.ajax({
-        type: 'POST',
-        url: '/mars',
-        data: {name_give: name, address_give: address, size_give: size},
-        success: function (response) {
-          alert(response['msg']);
-          window.location.reload();
-        },
-      });
-    }
-
-    function delete_order() {
-      let name = $('#name2').val();
-
-      $.ajax({
-        type: 'DELETE',
-        url: '/mars',
-        data: {name_give: name},
-        success: function (response) {
-          alert(response['msg']);
-          window.location.reload();
-        },
-      });
-    }
-
-    function logout() {
-      $.removeCookie('campuspot_token', {path: '/'});
-      console.log('로그아웃');
-      alert('로그아웃 되었습니다!');
-      window.location.href = '/login';
-    }
-
-  </script>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <nav>
-        <ul>
-          <li class="active"><a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=70px, height=70px title="캠퍼스팟"></a></li>
-          <li><a href="/campus_01">고려대학교</a></li>
-          <li><a href="/campus_02">건국대학교</a></li>
-          <li><a href="/campus_03">동국대학교</a></li>
-          <li><a href="/campus_04">서강대학교</a></li>
-          <li><a href="/campus_05">연세대학교</a></li>
-          <li><a href="/campus_06">한양대학교</a></li>
-          <li><a href="/campus_07">숭실대학교</a></li>
-          <li><a href="/campus_08">중앙대학교</a></li>
-          <li><a href="/campus_09">총신대학교</a></li>
-          <li><a href="/campus_10">서울대학교</a></li>
-          <div class="logoutButton">
-            <button onclick="logout()" type="button" class="btn btn-secondary mybtn">로그아웃</button>
+  <body>
+    <nav
+      class="navbar is-fixed-top is-success"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <div class="title-wrapper">
+            <strong class="is-title">CampuSpot</strong>
+            <div class="is-subtitle">대학 주변의 모든 정보</div>
           </div>
-        </ul>
-      </nav>
-    </header>
-    <h1>캠퍼스팟</h1>
-  </div>
+        </a>
 
+        <div class="navbar-item">
+          <div class="field is-grouped logout">
+            <p class="control">
+              <a class="button is-danger" onclick="logout()">
+                <span class="icon">
+                  <i class="fa fa-download"></i>
+                </span>
+                <span>로그아웃</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
 
-  <div class="mask"></div>
-  <div class="contents">
-    <div class="row">
-      <div class="col">
-        뭔가 메뉴
-      </div>
-      <div class="col-6">
-        뭔가 메뉴 넓은거
-      </div>
-      <div class="col">
-        뭔가 메뉴
-      </div>
-    </div>
-    <div class="First">
-      <div class="row">
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
+    <!-- <section class="hero is-success">
+      <div class="hero-body">
+        <p class="title">CampuSpot</p>
+        <p class="subtitle">대학 주변의 모든 정보</p>
+        <div class="field is-grouped personal-menu">
+          <p class="control">
+            <button class="button is-link" onclick="show_mypage()">
+              마이 페이지
+            </button>
+          </p>
+          <p class="control">
+            <button class="button is-danger" onclick="logout()">
+              로그아웃
+            </button>
+          </p>
         </div>
       </div>
-    </div>
-    <div class="Second">
-
-      <div class="row">
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-        <div class="col">
-          <a href="/"><img
-            src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-            width=200px, height=200px></a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</body>
+    </section> -->
+  </body>
 </html>

@@ -1,0 +1,60 @@
+body {
+  /*background-color: RGBA(232, 52, 78, 0.2);*/
+  background-color: RGBA(194, 228, 120, 0.5);
+  min-height: 100vh;
+}
+
+.hero-body {
+  padding-bottom: 1rem;
+  margin: auto;
+}
+
+.box {
+  max-width: 350px;
+  margin: auto;
+}
+
+.section {
+  padding: 1rem 1.5rem;
+  max-width: 750px;
+  margin: auto;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 5rem;
+  font-family: "IBM Plex Sans KR", sans-serif;
+}
+
+.subtitle {
+  font-size: 2rem;
+  font-family: "Nanum Pen Script", cursive;
+}
+
+.is-sparta {
+  color: #6583ee !important;
+}
+
+.button.is-sparta {
+  background-color: #6583ee;
+  border-color: transparent;
+  color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+  background-color: transparent;
+  border-color: #6583ee;
+  color: #6583ee !important;
+}
+
+.has-icons-left {
+  width: 100%;
+}
+
+.select {
+  margin-bottom: 40px;
+}
+
+.help {
+  color: gray;
+}
