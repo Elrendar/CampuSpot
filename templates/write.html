@@ -18,186 +18,180 @@
 
 
     <style>
-* {
-    margin:0;
-    padding:0;
-    color:white;
-    font-family: 'Hahmlet', serif;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: 'Hahmlet', serif;
+            box-sizing: border-box;
+        }
 
-ul {
-	list-style: none;
-}
+        ul {
+            list-style: none;
+        }
 
-a {
-	text-decoration: none;
-	color:white;
-	outline: none;
-}
-
-
-
-header {
-	width:100%;
-	height:80px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin: 10px 10px 10px 10px
-}
-
-header > nav {
-	width:100%;
-	height:10%;
-	position: absolute;
-    top: 0;
-    left: 0;
-    background: black;
-}
-
-header ul {
-	width:100%;
-	height: 100%;
-	display: flex;
-	justify-content: space-between;
-}
-
-header ul > li {
-	font-size:15px;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	margin: 0px 2px 0px 2px;
-}
-
-.header.drop {
-  position: fixed;
-  animation: dropHeader 0.3s;
-}
-
-@keyframes dropHeader {
-  0% {
-    top: -5rem;
-  }
-  100% {
-    top: 0;
-  }
-}
-
-body {
-background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://watermark.lovepik.com/photo/20211209/large/lovepik-young-college-student-sitting-on-the-lawn-image-picture_501758286.jpg');
-background-position: center;
-background-size: cover;
-}
-
-h1 {
-font-weight: bold;
-}
-
-.container {
-	width:1400px;
-	margin: 10px 10px 10px 10px;
-}
-
-.contents {
-    background-color: rgba( 0, 0, 0, 0.5 );
-	width:1400px;
-	margin: 10px auto;
-	color:white;
-	padding: 20px;
-	display: flex-direction;
-	align-items: center;
-}
-
-.contents > col {
-    margin: 10px 10px 10px 10px
-}
-
-.mybtn {
-width: 100%;
-margin : 10px auto 20px auto;
-}
+        a {
+            text-decoration: none;
+            color: white;
+            outline: none;
+        }
 
 
+        header {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 10px 10px 10px
+        }
 
-.logoutButton {
-width: 100px;
-margin: 20px 10px 20px 10px
-}
+        header > nav {
+            width: 100%;
+            height: 10%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: black;
+        }
 
-option {
-color: black;
-}
+        header ul {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header ul > li {
+            font-size: 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            margin: 0px 2px 0px 2px;
+        }
+
+        .header.drop {
+            position: fixed;
+            animation: dropHeader 0.3s;
+        }
+
+        @keyframes dropHeader {
+            0% {
+                top: -5rem;
+            }
+            100% {
+                top: 0;
+            }
+        }
+
+        body {
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://watermark.lovepik.com/photo/20211209/large/lovepik-young-college-student-sitting-on-the-lawn-image-picture_501758286.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .container {
+            width: 1400px;
+            margin: 10px 10px 10px 10px;
+        }
+
+        .contents {
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 1400px;
+            margin: 10px auto;
+            color: white;
+            padding: 20px;
+            display: flex-direction;
+            align-items: center;
+        }
+
+        .contents > col {
+            margin: 10px 10px 10px 10px
+        }
+
+        .mybtn {
+            width: 100%;
+            margin: 10px auto 20px auto;
+        }
+
+
+        .logoutButton {
+            width: 100px;
+            margin: 20px 10px 20px 10px
+        }
+
+        option {
+            color: black;
+        }
     </style>
     <script>
 
 
-$(document).ready(function () {
-show_order();
-});
+        $(document).ready(function () {
+            show_order();
+        });
 
-function show_order() {
-$.ajax({
-type: 'GET',
-url: '/mars',
-data: {},
-success: function (response) {
-    let rows = response['orders']
-    for (let i =0; i < rows.length; i++) {
-        let name = rows[i]['name']
-        let address = rows[i]['address']
-        let size = rows[i]['size']
-        let regex = /[^0-9]/g;
-        let price = size.replace(regex, "");
+        function show_order() {
+            $.ajax({
+                type: 'GET',
+                url: '/mars',
+                data: {},
+                success: function (response) {
+                    let rows = response['orders']
+                    for (let i = 0; i < rows.length; i++) {
+                        let name = rows[i]['name']
+                        let address = rows[i]['address']
+                        let size = rows[i]['size']
+                        let regex = /[^0-9]/g;
+                        let price = size.replace(regex, "");
 
-        let temp_html = `<tr>
+                        let temp_html = `<tr>
                             <td>${name}</td>
                             <td>${address}</td>
                             <td>${size}</td>
-                            <td>${price*500}</td>
+                            <td>${price * 500}</td>
                          </tr>`
-        $('#order-box').append(temp_html)
-    }
-}
-});
-}
-function save_order() {
-    let name = $('#name').val()
-    let address = $('#address').val()
-    let size = $('#size').val()
+                        $('#order-box').append(temp_html)
+                    }
+                }
+            });
+        }
 
-$.ajax({
-type: 'POST',
-url: '/mars',
-data: { name_give: name, address_give: address, size_give: size },
-success: function (response) {
-        alert(response['msg'])
-        window.location.reload()
-}
-});
-}
+        function save_order() {
+            let name = $('#name').val()
+            let address = $('#address').val()
+            let size = $('#size').val()
 
-function delete_order() {
-    let name = $('#name2').val()
+            $.ajax({
+                type: 'POST',
+                url: '/mars',
+                data: {name_give: name, address_give: address, size_give: size},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
+        }
 
-$.ajax({
-type: 'DELETE',
-url: '/mars',
-data: { name_give : name },
-success: function (response) {
-        alert(response['msg'])
-        window.location.reload()
-}
-});
+        function delete_order() {
+            let name = $('#name2').val()
 
-
-}
+            $.ajax({
+                type: 'DELETE',
+                url: '/mars',
+                data: {name_give: name},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                }
+            });
 
 
-
-
-
+        }
 
 
     </script>
