@@ -5,28 +5,28 @@
     <title>My Page | CampuSpot</title>
 
     <!-- Required meta tags -->
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
     <!-- Bulma CSS -->
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
     <!-- Font Awesome CSS -->
     <link
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet"
     />
     <!-- GoogleFont -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Nanum+Pen+Script&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Nanum+Pen+Script&display=swap"
+        rel="stylesheet"
     />
 
     <!-- JS -->
@@ -35,8 +35,8 @@
 
     <!-- CSS File -->
     <link
-      href="{{ url_for('static', filename='mypage.css') }}"
-      rel="stylesheet"
+        href="{{ url_for('static', filename='mypage.css') }}"
+        rel="stylesheet"
     />
 
     <!-- JS File -->
@@ -49,71 +49,107 @@
       });
 
       function showUserInfo() {
+        $('#details').empty();
+        regenerateMyInfo();
+
+        $('#input-username').val(userInfo['username']);
+        $('#input-email').val(userInfo['email']);
+        let birth = userInfo['birth'];
+        birth = [birth.slice(0, 4), '-', birth.slice(4, 6), '-', birth.slice(6)].join('');
+        $('#input-birth').val(birth);
+        $('#input-campus').val(userInfo['campus']);
+
+      }
+
+      function myPosts() {
         $.ajax({
           type: 'GET',
-          url: '/mypage',
+          url: '/api/myposts',
           data: {},
           success: function (response) {
-            console.log();
-
-            //$("#input-username").attr("value", "찬호");
-            // $("#input-email").value = `abc@abc.com`;
-
+            console.log(response);
+            // 입력한 계정이 db에 존재하면
+            //alert(response[0]['email']);
           },
         });
+      }
+
+      function saveInfo() {
+
+      }
+
+      function deleteAccount() {
+        $.ajax({
+          type: 'GET',
+          url: '/api/delete',
+          data: {},
+          success: function (response) {
+            console.log(response);
+            window.location.href = '/';
+          },
+        });
+        logout();
       }
     </script>
   </head>
   <body>
-    <div class="wrap">
-      <div class="banner" onclick="window.location.href = '/'"></div>
-      <section class="section is-large">
-        <!-- Main container -->
-        <nav class="level is-submenu">
-          <!-- Left side -->
-          <div class="level-left">
-            <div class="level-item">
-              <p class="subtitle is-3"><strong>내 정보</strong></p>
-            </div>
-            <div class="level-item"></div>
-          </div>
-          <!-- Right side -->
-          <div class="level-right">
-            <p class="level-item"><strong>내 정보</strong></p>
-            <p class="level-item"><a>내가 쓴 글</a></p>
-            <p class="level-item"><a class="button is-danger">회원 탈퇴</a></p>
-          </div>
-        </nav>
+    {#최상단 배너: 메인페이지 링크#}
+    <div class="banner" onclick="window.location.href = '/'"></div>
 
-        <div class="field">
-          <label class="label">별명</label>
-          <div class="control has-icons-left has-icons-right">
-            <input
-              id="input-username"
-              class="input is-success"
-              type="text"
-              placeholder="한글, 영문 2~8자"
-              value="홍길동"
-            />
-            <span class="icon is-small is-left">
+    {#회원 정보 폼#}
+    <form class="box">
+      <!-- 상단 메뉴바 -->
+      <!-- Main container -->
+      <nav class="level is-submenu">
+        <!-- Left side -->
+        <div class="level-left">
+          <div class="level-item">
+            <p class="subtitle is-3"><strong>내 정보</strong></p>
+          </div>
+          <div class="level-item"></div>
+        </div>
+        <!-- Right side -->
+        <div class="level-right">
+          <p id="my-info" class="level-item">
+            <button class="button is-primary" onclick="showUserInfo()">내 정보</button>
+          </p>
+          <p id="my-posts" class="level-item">
+            <button class="button is-link" onclick="myPosts()">내가 쓴 글</button>
+          </p>
+          <p id="delete-account" class="level-item"><a class="button is-danger" onclick="deleteAccount()">회원 탈퇴</a></p>
+        </div>
+      </nav>
+
+      <!-- 여기서부터 본문 -->
+      <div id="details" class="block">
+        <!-- 별명 -->
+        <fieldset disabled>
+          <div class="field">
+            <label class="label">별명</label>
+            <div class="control has-icons-left has-icons-right">
+              <input
+                  id="input-username"
+                  class="input"
+                  type="text"
+                  placeholder="한글, 영문 2~8자"
+              />
+              <span class="icon is-small is-left">
               <i class="fa fa-user"></i>
             </span>
-            <span class="icon is-small is-right">
-              <i class="fa fa-check"></i>
-            </span>
+            </div>
           </div>
-          <p class="help is-success">사용 가능한 별명입니다.</p>
-        </div>
+        </fieldset>
+        <!-- 이메일 -->
         <fieldset disabled>
           <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left">
               <input
-                id="input-email"
-                class="input"
-                type="email"
-                placeholder="이메일"
-                value="example@gmail.com"
+                  id="input-email"
+                  class="input"
+                  type="email"
+                  placeholder="이메일"
+                  value="example@gmail.com"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-envelope"></i>
@@ -121,15 +157,17 @@
             </div>
             <!-- <p class="help is-danger">This email is invalid</p> -->
           </div>
-
+        </fieldset>
+        <!-- 대학 정보 받아서 표시 -->
+        <fieldset disabled>
           <div class="field">
             <label class="label">소속 대학</label>
             <div class="control has-icons-left">
               <input
-                class="input"
-                type="text"
-                placeholder="없음"
-                value="숭실대학교"
+                  id="input-campus"
+                  class="input"
+                  type="text"
+                  placeholder="없음"
               />
               <span class="icon is-small is-left">
                 <i class="fa fa-university"></i>
@@ -137,59 +175,26 @@
             </div>
           </div>
         </fieldset>
-        <div class="field">
-          <label class="label">자기 소개</label>
-          <div class="control">
-            <textarea class="textarea" placeholder="Textarea"></textarea>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox" />
-              캠퍼스팟 소식지 수신에 동의합니다.
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <label class="label">나이 공개</label>
-            <label class="radio">
-              <input type="radio" name="question" />
-              Yes
-            </label>
-            <label class="radio">
-              <input type="radio" name="question" />
-              No
-            </label>
-          </div>
-        </div>
-
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-link">회원 정보 수정</button>
-          </div>
-        </div>
-
-        <!-- <footer class="footer">
-          <nav class="level">
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">쓴 글</p>
-                <p class="title">16</p>
-              </div>
+        <!-- 생년월일 받아서 표시 -->
+        <fieldset disabled>
+          <div class="field">
+            <label class="label">생년월일</label>
+            <div class="control has-icons-left">
+              <input
+                  id="input-birth"
+                  class="input"
+                  type="text"
+                  placeholder="0000-00-00"
+              />
+              <span class="icon is-small is-left">
+                <i class="fa fa-birthday-cake"></i>
+              </span>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">댓글</p>
-                <p class="title">56</p>
-              </div>
-            </div>
-          </nav>
-        </footer> -->
-      </section>
-    </div>
+          </div>
+        </fieldset>
+        <!-- 수정 버튼 -->
+        <button class="button is-dark" onclick="saveInfo()">회원 정보 수정</button>
+      </div>
+    </form>
   </body>
 </html>
