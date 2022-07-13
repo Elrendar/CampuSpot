@@ -12,10 +12,7 @@ app.config["UPLOAD_FOLDER"] = "./static/profile_pics"
 
 SECRET_KEY = "SPARTA"
 
-# client = MongoClient(
-#     'mongodb+srv://test:sparta@cluster0.6oczs.mongodb.net/?retryWrites=true&w=majority',
-#     27017, username="아이디", password="비밀번호")
-# db = client.dbsparta_plus_week4
+# client = MongoClient("52.78.26.248", 27017, username="test", password="test")
 client = MongoClient(
     "mongodb+srv://test:sparta@cluster0.6oczs.mongodb.net/?retryWrites=true&w=majority"
 )
@@ -29,6 +26,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["email"]})
+        print(user_info)
         return render_template("main.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -42,16 +40,41 @@ def login():
     return render_template("login.html", msg=msg)
 
 
-# @app.route("/user/<username>")
-# def user(username):
-#     # 각 사용자의 프로필과 글을 모아볼 수 있는 공간
+@app.route("/mypage")
+def mypage():
+    # 로그인 한 사용자의 프로필과 글을 모아볼 수 있는 공간(마이페이지)
+    token_receive = request.cookies.get("campuspot_token")
+
+    # payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+    # user_info = db.users.find_one({"email": payload["email"]})
+    # print(user_info)
+    # render_template("mypage.html", user_info=user_info)
+
+    # return jsonify({"result": "success", "email": user_info["email"]})
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["email"]}, {"_id": False})
+        print(user_info)
+        return render_template("mypage.html", user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    # email_receive = request.form["email_give"]
+    # user_info = db.users.find_one({"email": email_receive}, {"_id": False})
+
+
+# @app.route("/user/<email>")
+# def user(email):
+#     # 로그인 한 사용자의 프로필과 글을 모아볼 수 있는 공간(마이페이지)
 #     token_receive = request.cookies.get("campuspot_token")
 #     try:
 #         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-#         status = username == payload["id"]  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
-#
-#         user_info = db.users.find_one({"username": username}, {"_id": False})
-#         return render_template("user.html", user_info=user_info, status=status)
+#         status = email == payload["email"]  # 내 프로필이면 True, 다른 사람 프로필 페이지면 False
+
+#         user_info = db.users.find_one({"email": email}, {"_id": False})
+#         return render_template("mypage.html", user_info=user_info, status=status)
 #     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
 #         return redirect(url_for("home"))
 
@@ -82,10 +105,15 @@ def sign_in():
 
 @app.route("/sign_up/save", methods=["POST"])
 def sign_up():
+    ## 회원가입 폼에서 입력값 받아오기
     email_receive = request.form["email_give"]
     password_receive = request.form["password_give"]
     campus_receive = request.form["campus_give"]
+    username_receive = request.form["username_give"]
+    birth_receive = request.form["birth_give"]
+    # 암호화
     password_hash = hashlib.sha256(password_receive.encode("utf-8")).hexdigest()
+
     doc = {
         # 이메일
         "email": email_receive,
@@ -93,8 +121,10 @@ def sign_up():
         "password": password_hash,
         # 소속 대학 (기본값은 '')
         "campus": campus_receive,
-        # # 생년월일
-        # "birth": birth_give,
+        # 닉네임
+        "username": username_receive,
+        # 생년월일
+        "birth": birth_receive,
     }
     db.users.insert_one(doc)
     return jsonify({"result": "success"})

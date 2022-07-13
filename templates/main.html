@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>CampuSpot 캠퍼스팟</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,289 +18,287 @@
 
 
     <style>
-* {
-    margin:0;
-    padding:0;
-    color:white;
-    font-family: 'Hahmlet', serif;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: 'Hahmlet', serif;
+            box-sizing: border-box;
+        }
 
-ul {
-	list-style: none;
-}
+        ul {
+            list-style: none;
+        }
 
-a {
-	text-decoration: none;
-	color:white;
-	outline: none;
-}
-
-
-
-header {
-	width:100%;
-	height:80px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin: 10px 10px 10px 10px
-}
-
-header > nav {
-	width:100%;
-	height:10%;
-	position: absolute;
-    top: 0;
-    left: 0;
-    background: black;
-}
-
-header ul {
-	width:100%;
-	height: 100%;
-	display: flex;
-	justify-content: space-between;
-}
-
-header ul > li {
-	font-size:15px;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	margin: 0px 2px 0px 2px;
-}
-
-.header.drop {
-  position: fixed;
-  animation: dropHeader 0.3s;
-}
-
-@keyframes dropHeader {
-  0% {
-    top: -5rem;
-  }
-  100% {
-    top: 0;
-  }
-}
-
-body {
-background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://watermark.lovepik.com/photo/20211209/large/lovepik-young-college-student-sitting-on-the-lawn-image-picture_501758286.jpg');
-background-position: center;
-background-size: cover;
-}
-
-h1 {
-font-weight: bold;
-}
-
-.container {
-	width:1400px;
-	margin: 10px 10px 10px 10px;
-}
-
-.contents {
-    background-color: rgba( 0, 0, 0, 0.5 );
-	width:1400px;
-	margin: 10px auto;
-	color:white;
-	padding: 20px;
-	display: flex-direction;
-	align-items: center;
-}
-
-.contents > col {
-    margin: 10px 10px 10px 10px
-}
-
-.mybtn {
-width: 100%;
-margin : 10px auto 20px auto;
-}
+        a {
+            text-decoration: none;
+            color: white;
+            outline: none;
+        }
 
 
+        header {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 10px 10px 10px
+        }
 
-.logoutButton {
-width: 100px;
-margin: 20px 10px 20px 10px
-}
+        header > nav {
+            width: 100%;
+            height: 10%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: black;
+        }
 
-option {
-color: black;
-}
+        header ul {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header ul > li {
+            font-size: 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            margin: 0px 2px 0px 2px;
+        }
+
+        .header.drop {
+            position: fixed;
+            animation: dropHeader 0.3s;
+        }
+
+        @keyframes dropHeader {
+            0% {
+                top: -5rem;
+            }
+            100% {
+                top: 0;
+            }
+        }
+
+        body {
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://watermark.lovepik.com/photo/20211209/large/lovepik-young-college-student-sitting-on-the-lawn-image-picture_501758286.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        h1 {
+            font-weight: bold;
+        }
+
+        .container {
+            width: 1400px;
+            margin: 10px 10px 10px 10px;
+        }
+
+        .contents {
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 1400px;
+            margin: 10px auto;
+            color: white;
+            padding: 20px;
+            display: flex-direction;
+            align-items: center;
+        }
+
+        .contents > col {
+            margin: 10px 10px 10px 10px
+        }
+
+        .mybtn {
+            width: 100%;
+            margin: 10px auto 20px auto;
+        }
+
+
+        .logoutButton {
+            width: 100px;
+            margin: 20px 10px 20px 10px
+        }
+
+        option {
+            color: black;
+        }
     </style>
     <script>
 
 
-$(document).ready(function () {
-show_order();
-});
+      $(document).ready(function () {
+        show_order();
+      });
 
-function show_order() {
-$.ajax({
-type: 'GET',
-url: '/mars',
-data: {},
-success: function (response) {
-    let rows = response['orders']
-    for (let i =0; i < rows.length; i++) {
-        let name = rows[i]['name']
-        let address = rows[i]['address']
-        let size = rows[i]['size']
-        let regex = /[^0-9]/g;
-        let price = size.replace(regex, "");
+      function show_order() {
+        $.ajax({
+          type: 'GET',
+          url: '/mars',
+          data: {},
+          success: function (response) {
+            let rows = response['orders'];
+            for (let i = 0; i < rows.length; i++) {
+              let name = rows[i]['name'];
+              let address = rows[i]['address'];
+              let size = rows[i]['size'];
+              let regex = /[^0-9]/g;
+              let price = size.replace(regex, '');
 
-        let temp_html = `<tr>
+              let temp_html = `<tr>
                             <td>${name}</td>
                             <td>${address}</td>
                             <td>${size}</td>
-                            <td>${price*500}</td>
-                         </tr>`
-        $('#order-box').append(temp_html)
-    }
-}
-});
-}
-function save_order() {
-    let name = $('#name').val()
-    let address = $('#address').val()
-    let size = $('#size').val()
+                            <td>${price * 500}</td>
+                         </tr>`;
+              $('#order-box').append(temp_html);
+            }
+          },
+        });
+      }
 
-$.ajax({
-type: 'POST',
-url: '/mars',
-data: { name_give: name, address_give: address, size_give: size },
-success: function (response) {
-        alert(response['msg'])
-        window.location.reload()
-}
-});
-}
+      function save_order() {
+        let name = $('#name').val();
+        let address = $('#address').val();
+        let size = $('#size').val();
 
-function delete_order() {
-    let name = $('#name2').val()
+        $.ajax({
+          type: 'POST',
+          url: '/mars',
+          data: {name_give: name, address_give: address, size_give: size},
+          success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+          },
+        });
+      }
 
-$.ajax({
-type: 'DELETE',
-url: '/mars',
-data: { name_give : name },
-success: function (response) {
-        alert(response['msg'])
-        window.location.reload()
-}
-});
+      function delete_order() {
+        let name = $('#name2').val();
 
+        $.ajax({
+          type: 'DELETE',
+          url: '/mars',
+          data: {name_give: name},
+          success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+          },
+        });
 
-}
+        function logout() {
+          $.removeCookie('campuspot_token', {path: '/'});
+          console.log('로그아웃');
+          alert('로그아웃 되었습니다!');
+          window.location.href = '/login';
+        }
 
-
-
-
-
-
-
+      }
     </script>
-</head>
-<body>
-<div class="container">
-    <header>
+  </head>
+  <body>
+    <div class="container">
+      <header>
         <nav>
-            <ul>
-                <li class="active"><a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=70px, height=70px title="캠퍼스팟"></a></li>
-                <li><a href="/campus_01">중앙대학교</a></li>
-                <li><a href="/campus_02">숭실대학교</a></li>
-                <li><a href="/campus_03">총신대학교</a></li>
-                <li><a href="/campus_04">서강대학교</a></li>
-                <li><a href="/campus_05">연세대학교</a></li>
-                <li><a href="/campus_06">한양대학교</a></li>
-                <li><a href="/campus_07">건국대학교</a></li>
-                <li><a href="/campus_08">고려대학교</a></li>
-                <li><a href="/campus_09">동국대학교</a></li>
-                <li><a href="/campus_10">서울대학교</a></li>
-                <div class="logoutButton">
-                    <button onclick="logout()" type="button" class="btn btn-secondary mybtn">로그아웃</button>
-                </div>
-            </ul>
+          <ul>
+            <li class="active"><a href="/"><img
+                src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+                width=70px, height=70px title="캠퍼스팟"></a></li>
+            <li><a href="/campus_01">중앙대학교</a></li>
+            <li><a href="/campus_02">숭실대학교</a></li>
+            <li><a href="/campus_03">총신대학교</a></li>
+            <li><a href="/campus_04">서강대학교</a></li>
+            <li><a href="/campus_05">연세대학교</a></li>
+            <li><a href="/campus_06">한양대학교</a></li>
+            <li><a href="/campus_07">건국대학교</a></li>
+            <li><a href="/campus_08">고려대학교</a></li>
+            <li><a href="/campus_09">동국대학교</a></li>
+            <li><a href="/campus_10">서울대학교</a></li>
+            <div class="logoutButton">
+              <button onclick="logout()" type="button" class="btn btn-secondary mybtn">로그아웃</button>
+            </div>
+          </ul>
         </nav>
-    </header>
-    <h1>캠퍼스팟</h1>
-</div>
+      </header>
+      <h1>캠퍼스팟</h1>
+    </div>
 
 
-<div class="mask"></div>
-<div class="contents">
-    <div class="row">
+    <div class="mask"></div>
+    <div class="contents">
+      <div class="row">
         <div class="col">
-            뭔가 메뉴
+          뭔가 메뉴
         </div>
         <div class="col-6">
-            뭔가 메뉴 넓은거
+          뭔가 메뉴 넓은거
         </div>
         <div class="col">
-            <div class="logoutButton">
-                    <button onclick="logout()" type="button" class="btn btn-primary mybtn">글쓰기</button>
-                </div>
+          <div class="logoutButton">
+            <button onclick="logout()" type="button" class="btn btn-primary mybtn">글쓰기</button>
+          </div>
         </div>
-    </div>
-        <div class="row">
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0">
-                <p>카레맛집</p>
-                </a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0">
+            <p>카레맛집</p>
+          </a>
         </div>
-        <div class="row">
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-            <div class="col">
-                <a href="/"><img
-                        src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
-                        width=200px, height=200px, border="0"></a>
-            </div>
-</div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+        <div class="col">
+          <a href="/"><img
+              src="https://img.freepik.com/premium-vector/bee-honey-jar-cute-kawaii-character-cartoon_514366-28.jpg?w=826"
+              width=200px, height=200px, border="0"></a>
+        </div>
+      </div>
 
-</body>
+  </body>
 </html>
