@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <style>
+html {
+background-color: RGBA(194, 228, 120, 0.5);
+font-size:16px;
+}
+    * {
+        margin:0;
+        padding:0;
+        color:white;
+        box-sizing: border-box;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+        color:white;
+        outline: none;
+    }
+        body {
+            background-image: url('https://images.unsplash.com/photo-1532649538693-f3a2ec1bf8bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 150vh;
+            overflow: scroll;
+            -ms-overflow-style: none;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .title{
+        margin-top:29px;
+        }
+
+        .title-box{
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+
+        height: 100px;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background-color: RGBA(100, 100, 100, 0.5);
+        z-index:4;
+        }
+        .border-nav{
+            position:fixed;
+            top:100px;
+            width:100%;
+            height: 10px;
+            background-color:black;
+            z-index:4;
+        }
+
+        h1 {
+          display: flex;
+          vertical-align: middle;
+          color: white;
+          margin: 0.5rem;
+          padding: 0;
+        }
+
+
+        .nav_bar {
+            position: fixed;
+           top: 0;
+            right: 0;
+            max-width: 800px;
+            min-width: 500px;
+            margin-top:15px;
+            text-align: center;
+            display: flex;
+
+        }
+
+        .nav_btn {
+            padding: 15px;
+            font-size:16px;
+            margin: 10px;
+            border-radius: 10px;
+            color: black;
+            border: none;
+            background-color: RGBA(255, 255, 255, 0.7);
+        }
+        .nav_btn2 {
+            padding: 15px;
+            font-size:16px;
+            margin: 10px;
+            border-radius: 10px;
+            color: white;
+            border: none;
+            background-color: RGBA(100, 100, 100, 0.5);
+        }
+        .nav_btn3 {
+            padding: 15px;
+            font-size:16px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            background-color: black;
+        }
+
+        .wrap {
+            height: 100vh;
+        }
+
+        .container {
+            position: fixed;
+            top: 0;
+            /* width: 100% */
+            left: 0;
+            right: 0;
+            top: 150px;
+
+
+            text-align:center;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.60);
+            width: 50%;
+            height: 600px;
+            min-width: 500px;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            border: none;
+        }
+
+
+        .leftbtn {
+            margin-top: 30px;
+            margin-right: 30px;
+            background-color: coral;
+        }
+
+        .rightbtn {
+            margin-top: 30px;
+            background-color: aquamarine;
+        }
+
+    </style>
+    <title>Title</title>
+</head>
+
+<!--## 글 작성시 저장할 데이터들-->
+<!--# write = {-->
+<!--# 'title':title_receive,-->
+<!--# 'email': email_receive, #author-->
+<!--# 'body':body_receive,-->
+<!--# 'picture':picture_receive, # URL-->
+<!--# 'tag':tag_receive,-->
+<!--# 'campus':campus_receive-->
+<!--# }-->
+<body>
+<header>
+    <div class="title-box">
+        <h1 class="title"><a href="/"><img src="/static/campuspot_logo.png"></a></h1>
+
+        <nav class="nav_bar">
+            <button class="nav_btn" onclick="location.href='/'"style='cursor:pointer;'>전체보기</button>
+            <button class="nav_btn2" onclick="goCampus(this.innerHTML)"style='cursor:pointer;'>숭실대학교</button>
+            <button class="nav_btn2" onclick="goCampus(this.innerHTML)"style='cursor:pointer;'>중앙대학교</button>
+            <button class="nav_btn2" onclick="goCampus(this.innerHTML)"style='cursor:pointer;'>총신대학교</button>
+            <button class="nav_btn3" onclick="location.href='/'" style='cursor:pointer;'>메인페이지</button>
+        </nav>
+    </div>
+    <div class="border-nav"></div>
+</header>
+<div class="wrap">
+
+    <div class="container">
+    </div>
+
+</div>
+<script>
+
+
+    window.onload = function () {
+        const userInfo = {{ user_info|tojson }}
+            console.log(userInfo)
+        let html_temp = `
+            <h1 class="title">게시글을 추가해주세요</h1>
+        <div class="posting-box">
+            <div class="form-group">
+                <input type="text" class="form-control" id="title" placeholder="게시글 제목" >
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" placeholder="이메일" value="${userInfo.email}" disabled>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="campus" placeholder="대학 " value="${userInfo.campus}" disabled>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="photo" placeholder="사진링크">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="tag" placeholder="태그">
+            </div>
+            <!--                <div class="form-group">-->
+            <!--                    <input type="text" class="form-control" id="photo" placeholder="사진">-->
+            <!--                </div>-->
+            <div class="form-group">
+                    <textarea class="form-control" id="body" rows="3"
+                              placeholder="내용 입력"></textarea>
+            </div>
+            <div class="btn-wrap">
+                <button type="button" class="btn btn-light leftbtn" onclick="goback()">뒤로가기</button>
+                <button type="button" class="btn btn-light rightbtn" onclick="savePost()">저장하기</button>
+            </div>
+        </div>`
+        $(".container").append(html_temp)
+    }
+
+
+    function goback() {
+        window.location.href = '/'
+    }
+
+    function savePost() {
+        let title = $("#title").val();
+        let email = $("#email").val();
+        let campus = $("#campus").val();
+        let tag = $("#tag").val();
+        let photo = $("#photo").val();
+        let body = $("#body").val();
+
+        $.ajax({
+            type: "POST",
+            url: `/api/savePost`,
+            data: {
+                title_give: title,
+                email_give: email,
+                campus_give: campus,
+                tag_give: tag,
+                photo_give:photo,
+                body_give: body,
+
+            },
+            success: function (response) {
+                if (response['result'] == 'success') {
+                    // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
+                    // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
+                    console.log('토큰받기성공W', response['token'])
+                    $.cookie('mytoken', response['token']);
+
+                    alert('작성 완료!')
+                    window.location.href = '/'
+                    console.log('good')
+                } else {
+                    // 로그인이 안되면 에러메시지를 띄웁니다.
+                    alert(response['msg'])
+                }
+            }
+        });
+
+
+    }
+
+
+</script>
+</body>
+</html>

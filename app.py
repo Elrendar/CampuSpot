@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+import time
+import math
 import jwt
 import datetime
 import hashlib
@@ -6,18 +8,20 @@ import json
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+import certifi
 
+ca = certifi.where()
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["UPLOAD_FOLDER"] = "./static/profile_pics"
 
 SECRET_KEY = "SPARTA"
 
-# client = MongoClient("52.78.26.248", 27017, username="test", password="test")
-client = MongoClient(
-    "mongodb+srv://test:sparta@cluster0.6oczs.mongodb.net/?retryWrites=true&w=majority"
-)
-db = client.dbsparta_campuspot
+# client = MongoClient(
+#     'mongodb+srv://test:sparta@cluster0.6oczs.mongodb.net/?retryWrites=true&w=majority',
+#     27017, username="아이디", password="비밀번호")
+# db = client.dbsparta_plus_week4
+client = MongoClient('mongodb+srv://test:sparta@cluster0.xegtv.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=ca)
+db = client.dbsparta
 
 
 @app.route("/")
@@ -27,8 +31,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["email"]})
-
-        return render_template("main.html", user_info=user_info)
+        return render_template("index_ysw.html", user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -55,6 +58,21 @@ def mypage():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+@app.route('/createPost')
+def createPost():
+    token_receive = request.cookies.get("campuspot_token")
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["email"]}, {"_id": False})
+
+        return render_template("createPost_ysw.html", user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    return render_template('createPost_ysw.html')
 
 
 @app.route("/sign_in", methods=["POST"])
@@ -123,9 +141,13 @@ def myposts():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
         user_info = db.users.find_one({"email": payload["email"]}, {"_id": False})
-        postlist = list(db.posts.find({"email": user_info["email"]}, {"_id": False}))
+        # postlist = list(db.posts.find({"email": user_info["email"]}, {"_id": False}))
+        # print(postlist)
+        # return jsonify(json.dumps(postlist))
+        my_posts = list(db.posts.find({"email": user_info["email"]}, {'_id': False}))
+        print(my_posts)
 
-        return jsonify(json.dumps(postlist))
+        return jsonify({'result': 'success', 'my_posts': my_posts})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -150,48 +172,82 @@ def delete_account():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-# @app.route("/update_profile", methods=["POST"])
-# def save_img():
-#     token_receive = request.cookies.get("campuspot_token")
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-#         # 프로필 업데이트
-#         return jsonify({"result": "success", "msg": "프로필을 업데이트했습니다."})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-#
-#
-# @app.route("/posting", methods=["POST"])
-# def posting():
-#     token_receive = request.cookies.get("campuspot_token")
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-#         # 포스팅하기
-#         return jsonify({"result": "success", "msg": "포스팅 성공"})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-#
-#
-# @app.route("/get_posts", methods=["GET"])
-# def get_posts():
-#     token_receive = request.cookies.get("campuspot_token")
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-#         # 포스팅 목록 받아오기
-#         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
-#
-#
-# @app.route("/update_like", methods=["POST"])
-# def update_like():
-#     token_receive = request.cookies.get("campuspot_token")
-#     try:
-#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
-#         # 좋아요 수 변경
-#         return jsonify({"result": "success", "msg": "updated"})
-#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-#         return redirect(url_for("home"))
+@app.route("/api/editUsername", methods=["POST"])
+def edit_username():
+    # 계정 삭제
+    token_receive = request.cookies.get("campuspot_token")
+    username_receive = request.form["username_give"]
+
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=["HS256"])
+        user_info = db.users.find_one({"email": payload["email"]}, {"_id": False})
+        if user_info is not None:
+            db.users.update_one({"email": user_info['email']}, {"$set": {"username": username_receive}})
+
+        return jsonify({"result": "success"})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+@app.route('/api/savePost', methods=['POST'])
+def savePost():
+    # 게시글 속성 저장하기
+    num = time.time()
+    numId = math.trunc(num)
+    title_receive = request.form['title_give']
+    email_receive = request.form['email_give']
+    tag_receive = request.form['tag_give']
+    campus_receive = request.form['campus_give']
+    body_receive = request.form['body_give']
+    photo_receive = request.form['photo_give']
+    doc = {'numId': numId, "title": title_receive, "email": email_receive, "tag": tag_receive, "campus": campus_receive,
+           "body": body_receive, "photo": photo_receive}
+    db.posts.insert_one(doc)
+    return jsonify({'result': 'success', 'msg': f' "{title_receive}" saved'})
+
+
+@app.route('/api/deletePost', methods=['POST'])
+def delete_word():
+    # 단어 삭제하기
+    num_receive = request.form['numId_give']
+    db.posts.delete_one({"numId": int(num_receive)})
+    return jsonify({'result': 'success', 'msg': f'word "{num_receive}" deleted'})
+
+
+@app.route('/api/nick', methods=['GET'])
+def api_valid():
+    token_receive = request.cookies.get('campuspot_token')
+    # print(request.args.get('campusName'))
+    # checkCampus=request.args.get('campusName')
+    # try / catch 문?
+    # try 아래를 실행했다가, 에러가 있으면 except 구분으로 가란 얘기입니다.
+
+    try:
+        # token을 시크릿키로 디코딩합니다.
+        # 보실 수 있도록 payload를 print 해두었습니다. 우리가 로그인 시 넣은 그 payload와 같은 것이 나옵니다.
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        print(payload)
+
+        # payload 안에 id가 들어있습니다. 이 id로 유저정보를 찾습니다.
+        # 여기에선 그 예로 닉네임을 보내주겠습니다.
+
+        # if checkCampus:
+        #     userinfo = db.user.find_one({'email': payload['email']}, {'_id': 0})
+        #     allData_list = list(db.write.find({'campus':checkCampus}, {'_id': False}))
+        #     return jsonify({'result': 'success', 'nickname': userinfo['nick'], 'allData': allData_list})
+        #
+        # else:
+        userinfo = db.users.find_one({'email': payload['email']}, {'_id': 0})
+        allData_list = list(db.posts.find({},{'_id':False}))
+        print(allData_list)
+        return jsonify({'result': 'success', 'user-email': payload['email'], 'allData': allData_list})
+    except jwt.ExpiredSignatureError:
+        # 위를 실행했는데 만료시간이 지났으면 에러가 납니다.
+        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
 
 
 if __name__ == "__main__":
